@@ -1,0 +1,20 @@
+{
+  "name": "beok",
+  "version": "0.0.1",
+  "description": "Javascript librari for Beok/Hysen HVAC thermostat",
+  "main": "index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start:whatch": "tsc --watch && node js/index.js",
+    "prepublish": "tsc"
+  },
+  "author": "Danilo Tomaccio",
+  "license": "ISC",
+  "dependencies": {
+    "aes-js": "^3.1.2",
+    "dgram": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.2"
+  }
+}
