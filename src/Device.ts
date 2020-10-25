@@ -20,7 +20,11 @@ export default class Device {
     private connectionSocket = dgram.createSocket({ type: 'udp4', reuseAddr: true });
 
     private sendRequest = async (inputPayload: Buffer) => {
+        let requestPayload = this.createRequestPayload(inputPayload);
+        return await this.sendPacket(0x6a, Buffer.from(requestPayload));
+    }
 
+    private createRequestPayload = (inputPayload: Buffer): number[] => {
         let crc = Utils.calculateCRC(inputPayload);
 
         let requestPayload = [inputPayload.length + 2, 0x00];
@@ -30,8 +34,7 @@ export default class Device {
         requestPayload.push(crc & 0xFF);
         requestPayload.push((crc >> 8) & 0xFF);
 
-        return await this.sendPacket(0x6a, Buffer.from(requestPayload));
-
+        return requestPayload;
     }
 
 
@@ -40,9 +43,26 @@ export default class Device {
      * 
      */
     private sendPacket = (command: number, payload: Buffer): Promise<Buffer> => {
+        const packet = this.createSendPacket(command, payload);
+
+        return new Promise(
+            (resolve, reject) => {
+                this.connectionSocket.send(packet, 0, packet.length, this.host.port, this.host.address, (err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                });
+                this.connectionSocket.once("message", (msg, remoteInfo) => resolve(msg));
+            }
+        );
+
+    }
+
+
+    private createSendPacket = (command: number, payload: Buffer): Buffer => {
         this.count = (this.count + 1) & 0xffff;
 
-        var packet = Buffer.alloc(0x38, 0);
+        let packet = Buffer.alloc(0x38, 0);
         packet[0x00] = 0x5a;
         packet[0x01] = 0xa5;
         packet[0x02] = 0xaa;
@@ -86,17 +106,7 @@ export default class Device {
         packet[0x20] = checksum & 0xff;
         packet[0x21] = checksum >> 8;
 
-        return new Promise(
-            (resolve, reject) => {
-                this.connectionSocket.send(packet, 0, packet.length, this.host.port, this.host.address, (err) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                });
-                this.connectionSocket.once("message", (msg, remoteInfo) => resolve(msg));
-            }
-        );
-
+        return packet;
     }
 
 
