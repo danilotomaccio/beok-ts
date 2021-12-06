@@ -1,5 +1,5 @@
 import test, { ExecutionContext } from 'ava';
-import Device from './src/Device';
+import { Device } from './src/Device';
 import Utils from './src/Utils';
 
 test('UTILS - calculateCRC', (t: ExecutionContext) => {

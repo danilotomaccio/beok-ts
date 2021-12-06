@@ -1,7 +1,7 @@
-import Device from "./Device";
-import dgram = require('dgram');
+import { Device } from "./Device";
+import * as dgram from 'dgram';
 
-export default class Beok {
+export class Beok {
     private static cs = dgram.createSocket({ type: 'udp4', reuseAddr: true });
     public static devices = new Array<Device>();
 

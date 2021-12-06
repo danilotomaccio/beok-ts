@@ -1,9 +1,9 @@
-import dgram = require('dgram');
+import * as dgram from 'dgram';
 import { IHost } from './types';
 let aesjs = require("aes-js");
 import Utils from "./Utils";
 
-export default class Device {
+export class Device {
     constructor(private mac: Buffer, private name: string, private devtype: number, private host: IHost) {
         this.mac = mac;
         this.name = name;
