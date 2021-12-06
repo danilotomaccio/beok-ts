@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": [
-      "es2019.array"
-    ],
-    "moduleResolution": "node",
-    "strict": true,
-    "sourceMap": true,
+    "target": "ES2018",
     "module": "commonjs",
-    "outDir": "dist",
+    "lib": ["es2019.array"],
+    "moduleResolution": "node",
+    "sourceMap": true,
     "declaration": true,
-  }
+    "outDir": "dist",
+    "rootDir": "./",
+    "resolveJsonModule": true
+  },
+  "include": ["./index.ts", "./src"]
 }

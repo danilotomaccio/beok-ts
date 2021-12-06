@@ -42,7 +42,7 @@ export class Device {
      * Send the packet and wait for the first answer
      * 
      */
-    private sendPacket = (command: number, payload: Buffer): Promise<Buffer> => {
+    sendPacket = (command: number, payload: Buffer): Promise<Buffer> => {
         const packet = this.createSendPacket(command, payload);
 
         return new Promise(
@@ -59,7 +59,7 @@ export class Device {
     }
 
 
-    private createSendPacket = (command: number, payload: Buffer): Buffer => {
+    createSendPacket = (command: number, payload: Buffer): Buffer => {
         this.count = (this.count + 1) & 0xffff;
 
         let packet = Buffer.alloc(0x38, 0);
