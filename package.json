@@ -1,6 +1,6 @@
 {
   "name": "beok",
-  "version": "0.0.5-h",
+  "version": "0.0.6",
   "description": "Javascript librari for Beok/Hysen HVAC thermostat",
   "main": "index.js",
   "types": "index.d.ts",

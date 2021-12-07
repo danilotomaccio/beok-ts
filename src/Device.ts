@@ -158,6 +158,21 @@ export class Device {
         return this.sendRequest(Buffer.from([0x01, 0x06, 0x00, 0x01, 0x00, temp * 2]))
     }
 
+    getTemp = async () => {
+        const payload = await this.sendRequest(Buffer.from([0x01, 0x03, 0x00, 0x00, 0x00, 0x08]))
+
+        if (payload) {
+            const aesCbc = new aesjs.ModeOfOperation.cbc(this.key, this.iv);
+
+            const res = aesCbc.decrypt(payload.slice(0x38, payload.length));
+
+            console.log(res);
+            // return res[0x08] / 2.0; //Temperatura impostata
+            return res[0x07] / 2.0; //Temperatura ambiente
+        }
+
+        return -1;
+    }
     // TODO - Add other methods (e.g. getTemp)
 
 }
